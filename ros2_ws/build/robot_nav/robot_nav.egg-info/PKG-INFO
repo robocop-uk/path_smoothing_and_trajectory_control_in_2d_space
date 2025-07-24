@@ -1,10 +1,10 @@
 Metadata-Version: 2.1
 Name: robot-nav
 Version: 0.1.0
-Summary: Path smoothing and trajectory tracking in ROS2
+Summary: Simple robot trajectory follower with obstacle detection
 Home-page: UNKNOWN
-Maintainer: Your Name
-Maintainer-email: your@email.com
+Maintainer: robocop-uk
+Maintainer-email: reachouttosundar@gmail.com
 License: MIT
 Platform: UNKNOWN
 

@@ -9,7 +9,6 @@ setup.py
 ../../build/robot_nav/robot_nav.egg-info/top_level.txt
 ../../build/robot_nav/robot_nav.egg-info/zip-safe
 launch/nav_sim.launch.py
-resource/robot_nav
 robot_nav/__init__.py
 robot_nav/controller.py
 robot_nav/smoother.py

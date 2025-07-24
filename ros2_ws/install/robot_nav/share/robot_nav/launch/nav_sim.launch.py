@@ -1,30 +1,47 @@
+# nav_sim.launch.py
 from launch import LaunchDescription
+from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
-    turtlebot3_gazebo_dir = get_package_share_directory('turtlebot3_gazebo')
-    world_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(turtlebot3_gazebo_dir, 'launch', 'turtlebot3_world.launch.py')
-        ),
-        launch_arguments={
-            'world': os.path.join(turtlebot3_gazebo_dir, 'worlds', 'turtlebot3_world.world')
-        }.items()
-    )
-
-    controller_node = Node(
-        package='robot_nav',
-        executable='controller',
-        name='pure_pursuit_controller',
-        output='screen'
+    TURTLEBOT3_MODEL = os.environ.get('TURTLEBOT3_MODEL', 'burger')
+    urdf_file = os.path.join(
+        '/opt/ros/foxy/share/turtlebot3_description/urdf',
+        f'turtlebot3_{TURTLEBOT3_MODEL}.urdf'
     )
 
     return LaunchDescription([
-        world_launch,
-        controller_node
+        # Launch Gazebo
+        ExecuteProcess(
+            cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+            output='screen'
+        ),
+
+        # Robot State Publisher
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            arguments=[urdf_file],
+            parameters=[{'use_sim_time': True}],
+            output='screen'
+        ),
+
+        # Spawn the robot
+        Node(
+            package='gazebo_ros',
+            executable='spawn_entity.py',
+            arguments=['-entity', 'turtlebot3', '-file', urdf_file, '-x', '0.0', '-y', '0.0', '-z', '0.1'],
+            output='screen'
+        ),
+
+        # Your controller node
+        Node(
+            package='robot_nav',
+            executable='controller',
+            name='trajectory_follower',
+            output='screen'
+        )
     ])
 

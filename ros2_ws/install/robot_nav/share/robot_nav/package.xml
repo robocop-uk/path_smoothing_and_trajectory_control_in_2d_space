@@ -4,8 +4,8 @@
   <name>robot_nav</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="reachouttosundar@gmail.com">robocop</maintainer>
-  <license>TODO: License declaration</license>
+  <maintainer email="reachouttosundar@gmail.com">robocop-uk</maintainer>
+  <license>MIT</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
